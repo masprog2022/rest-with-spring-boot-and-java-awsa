@@ -30,7 +30,7 @@ public class PersonService {
 		logger.info("Finding one person!");
 		
         return repository.findById(id)
-        		.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        		.orElseThrow(() -> new ResourceNotFoundException("Nenhum registo encontrado para este ID!"));
 		
 	}
 	
@@ -44,7 +44,7 @@ public class PersonService {
 		logger.info("Updating one person!");
 		
 		var entity = repository.findById(person.getId())
-	        		.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+	        		.orElseThrow(() -> new ResourceNotFoundException("Nenhum registo encontrado para este ID!"));
 		//person.setId(counter.incrementAndGet());
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
@@ -59,7 +59,7 @@ public class PersonService {
 		logger.info("Deleting one person!");
 		
 		var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+				.orElseThrow(() -> new ResourceNotFoundException("Nenhum registo encontrado para este ID!"));
 		repository.delete(entity);
 	
 	}
