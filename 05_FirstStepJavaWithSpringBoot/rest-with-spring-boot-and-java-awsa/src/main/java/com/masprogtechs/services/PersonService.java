@@ -3,10 +3,12 @@ package com.masprogtechs.services;
 
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.exceptions.ResourceNotFoundException;
-import com.masprogtechs.model.Person;
 import com.masprogtechs.repositories.PersonRepository;
 
 @Service
@@ -17,7 +19,7 @@ public class PersonService {
 	
 	private Logger logger = Logger.getLogger(PersonService.class.getName());
 	
-	public List<Person> findAll() {
+	public List<PersonVO> findAll() {
 		
 	  logger.info("Finding all people!");
 	  
@@ -26,7 +28,7 @@ public class PersonService {
 	}
 	
 	
-	public Person findById(Long id) {
+	public PersonVO findById(Long id) {
 		logger.info("Finding one person!");
 		
         return repository.findById(id)
@@ -34,13 +36,13 @@ public class PersonService {
 		
 	}
 	
-	public Person create(Person person) {
+	public PersonVO create(PersonVO person) {
 		logger.info("Creating one person!");
 		
 		return repository.save(person);
 	}
 	
-	public Person update(Person person) {
+	public PersonVO update(PersonVO person) {
 		logger.info("Updating one person!");
 		
 		var entity = repository.findById(person.getId())
