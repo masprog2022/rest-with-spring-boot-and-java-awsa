@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.data.vo.v2.PersonVOV2;
+import com.masprogtechs.mapper.custom.PersonMapper;
 import com.masprogtechs.services.PersonService;
 
 @RestController

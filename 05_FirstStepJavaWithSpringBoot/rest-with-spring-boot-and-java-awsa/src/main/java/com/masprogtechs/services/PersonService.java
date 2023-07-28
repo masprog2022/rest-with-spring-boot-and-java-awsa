@@ -11,6 +11,7 @@ import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.data.vo.v2.PersonVOV2;
 import com.masprogtechs.exceptions.ResourceNotFoundException;
 import com.masprogtechs.mapper.DozerMapper;
+import com.masprogtechs.mapper.custom.PersonMapper;
 import com.masprogtechs.model.Person;
 import com.masprogtechs.repositories.PersonRepository;
 
@@ -18,7 +19,10 @@ import com.masprogtechs.repositories.PersonRepository;
 public class PersonService {
 
 	@Autowired
-	PersonRepository repository;
+	private PersonRepository repository;
+	
+	@Autowired
+	private PersonMapper mapper;
 	
 	private Logger logger = Logger.getLogger(PersonService.class.getName());
 	
@@ -54,9 +58,9 @@ public class PersonService {
 	public PersonVOV2 createV2(PersonVOV2 person) {
 		logger.info("Creating one person!");
 		
-		var entity = DozerMapper.parseObject(person, Person.class); 
+		var entity = mapper.convertVoToEntity(person); 
 		
-		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVOV2.class);
+		var vo =  mapper.convertEntityToVo(repository.save(entity));
 		
 		return vo;
 		
