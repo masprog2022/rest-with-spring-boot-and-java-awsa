@@ -3,6 +3,9 @@ package com.masprogtechs.data.vo.v1;
 import java.io.Serializable;
 import java.util.Objects;
 
+
+
+//@JsonPropertyOrder({"id", "address", "firstName","lastName", "gender"})
 public class PersonVO implements Serializable {
 
 
