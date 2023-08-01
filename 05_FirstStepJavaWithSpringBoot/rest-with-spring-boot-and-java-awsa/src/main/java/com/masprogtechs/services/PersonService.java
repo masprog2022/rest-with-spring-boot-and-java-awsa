@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.stereotype.Service;
 
+import com.masprogtechs.PersonController;
 import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.data.vo.v2.PersonVOV2;
 import com.masprogtechs.exceptions.ResourceNotFoundException;
@@ -41,7 +46,11 @@ public class PersonService {
         var entity = repository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("Nenhum registo encontrado para este ID!"));
         
-        return DozerMapper.parseObject(entity, PersonVO.class);
+         PersonVO vo = DozerMapper.parseObject(entity, PersonVO.class);
+         
+         vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        
+        return vo;
 		
 	}
 	
@@ -69,7 +78,7 @@ public class PersonService {
 	public PersonVO update(PersonVO person) {
 		logger.info("Updating one person!");
 		
-		var entity = repository.findById(person.getId())
+		var entity = repository.findById(person.getKey())
 	        		.orElseThrow(() -> new ResourceNotFoundException("Nenhum registo encontrado para este ID!"));
 		//person.setId(counter.incrementAndGet());
 		entity.setFirstName(person.getFirstName());
