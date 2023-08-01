@@ -88,7 +88,7 @@ public class PersonVO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, firstName, gender, id, lastName);
+		return Objects.hash(id, firstName,lastName, address, gender );
 	}
 
 
