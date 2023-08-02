@@ -1,6 +1,9 @@
 package com.masprogtechs.services;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -15,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.model.Person;
 import com.masprogtechs.repositories.PersonRepository;
 import com.masprogtechs.unittests.mapper.mocks.MockPerson;
@@ -62,27 +66,76 @@ class PersonServiceTest {
 		
 		//fail("Not yet implemented");
 	}
+	
+	@Test
+	void testCreate() {
+		Person entity = input.mockEntity(1); 
+		entity.setId(1L);
+		
+		Person persisted = entity;
+		persisted.setId(1L);
+		
+		PersonVO vo = input.mockVO(1);
+		vo.setKey(1L);
+		
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		var result = service.create(vo);
+		
+		assertNotNull(result);
+		assertNotNull(result.getKey());
+		assertNotNull(result.getLinks());
+		assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+		assertEquals("Addres Test1", result.getAddress());
+		assertEquals("First Name Test1", result.getFirstName());
+		assertEquals("Last Name Test1", result.getLastName());
+		assertEquals("Female", result.getGender());
+	}
+	
+	@Test
+	void testUpdate() {
+Person entity = input.mockEntity(1); 
+		
+		Person persisted = entity;
+		persisted.setId(1L);
+		
+		PersonVO vo = input.mockVO(1);
+		vo.setKey(1L);
+		
+
+		when(repository.findById(1L)).thenReturn(Optional.of(entity));
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		var result = service.update(vo);
+		
+		assertNotNull(result);
+		assertNotNull(result.getKey());
+		assertNotNull(result.getLinks());
+		
+		assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+		assertEquals("Addres Test1", result.getAddress());
+		assertEquals("First Name Test1", result.getFirstName());
+		assertEquals("Last Name Test1", result.getLastName());
+		assertEquals("Female", result.getGender());
+	}
+	
+	@Test
+	void testDelete() {
+		Person entity = input.mockEntity();
+		entity.setId(1L);
+		
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+		
+		service.delete(1L);
+	}
 
 	@Test
 	void testFindAll() {
 		fail("Not yet implemented");
 	}
 
+	
 
 
-	@Test
-	void testCreate() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdate() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testDelete() {
-		fail("Not yet implemented");
-	}
 
 }
