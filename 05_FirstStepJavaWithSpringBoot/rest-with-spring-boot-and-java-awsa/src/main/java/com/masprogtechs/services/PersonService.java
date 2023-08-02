@@ -1,19 +1,19 @@
 package com.masprogtechs.services;
 
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.springframework.stereotype.Service;
 
 import com.masprogtechs.PersonController;
 import com.masprogtechs.data.vo.v1.PersonVO;
 import com.masprogtechs.data.vo.v2.PersonVOV2;
+import com.masprogtechs.exceptions.RequireObjectlsNullException;
 import com.masprogtechs.exceptions.ResourceNotFoundException;
 import com.masprogtechs.mapper.DozerMapper;
 import com.masprogtechs.mapper.custom.PersonMapper;
@@ -61,6 +61,9 @@ public class PersonService {
 	}
 	
 	public PersonVO create(PersonVO person) {
+		
+		if (person == null) throw new RequireObjectlsNullException();
+		
 		logger.info("Creating one person!");
 		
 		var entity = DozerMapper.parseObject(person, Person.class); 
@@ -84,6 +87,9 @@ public class PersonService {
 	}
 	
 	public PersonVO update(PersonVO person) {
+		
+		if (person == null) throw new RequireObjectlsNullException();
+		
 		logger.info("Updating one person!");
 		
 		var entity = repository.findById(person.getKey())
