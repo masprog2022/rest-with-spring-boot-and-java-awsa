@@ -134,7 +134,7 @@ MockBook input;
 	
 	@Test
 	void testUpdateWithNullBook() {
-		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+		Exception exception = assertThrows(RequireObjectlsNullException.class, () -> {
 			service.update(null);
 		});
 		
