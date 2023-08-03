@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.masprogtechs.PersonController;
 import com.masprogtechs.data.vo.v1.PersonVO;
-import com.masprogtechs.data.vo.v2.PersonVOV2;
+
 import com.masprogtechs.exceptions.RequireObjectlsNullException;
 import com.masprogtechs.exceptions.ResourceNotFoundException;
 import com.masprogtechs.mapper.DozerMapper;
