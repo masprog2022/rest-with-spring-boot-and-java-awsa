@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,7 @@ public class BookController {
 	@Autowired
 	private BookServices service;
 
-	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping(value = "/{id}",
 		produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
 	@Operation(summary = "Finds a Book", description = "Finds a Book",
@@ -73,7 +75,7 @@ public class BookController {
 			return service.findAll();
 		}
 	
-	
+	@CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
 	@PostMapping(
 			consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  },
 			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
@@ -113,6 +115,19 @@ public class BookController {
 			return service.update(book);
 		}
 	
+	
+	@DeleteMapping(value = "/{id}")
+	@Operation(summary = "Deletes a Book",
+		description = "Deletes a Book by passing in a JSON, XML or YML representation of the book!",
+		tags = {"Book"},
+		responses = {
+			@ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+			@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+			@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+			@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+			@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+		}
+	)
 	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
