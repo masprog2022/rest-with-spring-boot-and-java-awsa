@@ -18,8 +18,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.masprogtechs.data.vo.v1.security.TokenVO;
+import com.masprogtechs.exceptions.InvalidJwtAuthenticationException;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class JwtTokenProvider {
@@ -86,6 +88,29 @@ public class JwtTokenProvider {
 		JWTVerifier verifier = JWT.require(alg).build();
 		DecodedJWT decodedJWT = verifier.verify(token);
 		return decodedJWT;
+	}
+	
+	
+	public String resolveToken(HttpServletRequest req) {
+		String bearerToken = req.getHeader("Authorization");
+		
+		// Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsZWFuZHJvIiwicm9sZXMiOlsiQURNSU4iLCJNQU5BR0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImV4cCI6MTY1MjcxOTUzOCwiaWF0IjoxNjUyNzE1OTM4fQ.muu8eStsRobqLyrFYLHRiEvOSHAcss4ohSNtmwWTRcY
+		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring("Bearer ".length());
+		}
+		return null;
+	}
+	
+	public boolean validateToken(String token) {
+		DecodedJWT decodedJWT = decodedToken(token);
+		try {
+			if (decodedJWT.getExpiresAt().before(new Date())) {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			throw new InvalidJwtAuthenticationException("Expired or invalid JWT token!");
+		}
 	}
 	
 	
